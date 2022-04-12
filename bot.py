@@ -11,7 +11,7 @@ def get_question():
 
     qs = ''
     answer = []
-    response = requests.get("https://quiet-mesa-21253.herokuapp.com/api/random/")
+    response = requests.get("")
     json_data = json.loads(response.text)
     qs += "Question: \n"
     qs += json_data[0]['title'] + "\n"
