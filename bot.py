@@ -14,13 +14,14 @@ def get_question():
     answer = []
     response = requests.get("https://lit-ocean-06406.herokuapp.com/api/random/")
     json_data = json.loads(response.text)
+    cat = json_data[0]['cat'] + "\n"
     qs += "Question: \n"
     qs += json_data[0]['title'] + "\n"
 
     for item in json_data[0]['answer']:
         answer.append(item['answer'])
 
-    return(qs, answer)
+    return(qs, cat, answer)
 
 
 @client.event
@@ -30,9 +31,9 @@ async def on_message(message):
         return
 
     if message.content.startswith('/question'):
-        question, answer = get_question()
+        question, cat, answer = get_question()
 
-        embed = discord.Embed(title="Question:", description=question, color=0xff0000)
+        embed = discord.Embed(title=cat, description=question, color=0xff0000)
         await message.channel.send(embed=embed)
 
         def check(m):
