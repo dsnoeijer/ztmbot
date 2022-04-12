@@ -1,3 +1,4 @@
+import os
 import json
 import asyncio
 import requests
@@ -48,6 +49,5 @@ async def on_message(message):
             await message.channel.send(str(head) +
                                        " has answered correctly: " + "\"" + answer[0] + "\"")
 
-with open("token.t", "r", encoding="utf-8") as f:
-    token = f.read()
+token = os.environ.get('BOT_TOKEN')
 client.run(token)
