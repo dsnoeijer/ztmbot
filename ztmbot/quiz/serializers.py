@@ -23,5 +23,6 @@ class RandomQuestionSerializer(serializers.ModelSerializer):
         model = Question
         fields = [
             'title',
+            'cat',
             'answer'
         ]
