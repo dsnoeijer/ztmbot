@@ -33,7 +33,7 @@ async def on_message(message):
         question, answer = get_question()
 
         embed = discord.Embed(title="Question:", description=question, color=0xff0000)
-        await message.send(embed=embed)
+        await message.channel.send(embed=embed)
         # await message.channel.send(question)
 
         def check(m):
