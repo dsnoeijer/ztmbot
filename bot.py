@@ -27,12 +27,16 @@ https: // github.com/dsnoeijer/ztmbot.git
 
 @client.event
 async def on_message(message):
+
     if message.author == client.user:
         return
 
     if message.content.startswith('/question'):
         question, answer = get_question()
-        await message.channel.send(question)
+
+        embed = discord.Embed(title="Question:", description=question, color=0xff0000)
+        await message.send(embed=embed)
+        # await message.channel.send(question)
 
         def check(m):
             return m.author == message.author
