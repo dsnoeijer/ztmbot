@@ -34,7 +34,6 @@ async def on_message(message):
 
         embed = discord.Embed(title="Question:", description=question, color=0xff0000)
         await message.channel.send(embed=embed)
-        # await message.channel.send(question)
 
         def check(m):
             return m.author == message.author

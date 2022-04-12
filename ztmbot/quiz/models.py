@@ -1,3 +1,4 @@
+from statistics import mode
 from django.db import models
 from django.utils.translation import gettext as _
 
@@ -14,6 +15,7 @@ class Question(models.Model):
 
     # Tables for our database
     title = models.CharField(_("Title"), max_length=255)
+    cat = models.CharField(_("Category"), max_length=255, default="General")
     points = models.SmallIntegerField(_("Points"))
     difficulty = models.IntegerField(_("Difficulty"), choices=LEVEL, default=0)
     is_active = models.BooleanField(_("Is Active"), default=True)
