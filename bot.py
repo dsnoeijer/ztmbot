@@ -41,7 +41,8 @@ async def on_message(message):
 
         if guess.content in answer:
             head, sep, tail = str(message.author).partition('#')
-            await message.channel.send(str(head) + " has answered correctly: " + "\"" + answer[0] + "\"")
+            await message.channel.send(str(head) +
+                                       " has answered correctly: " + "\"" + answer[0] + "\"")
 
 
 client.run('OTYzMDg4OTI2MDk1MDQ4NzI2.YlRAdQ.3ajFQsyEOvX7bLCxBHdcwSBkEDg')
