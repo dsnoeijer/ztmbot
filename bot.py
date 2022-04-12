@@ -22,9 +22,6 @@ def get_question():
     return(qs, answer)
 
 
-https: // github.com/dsnoeijer/ztmbot.git
-
-
 @client.event
 async def on_message(message):
 
