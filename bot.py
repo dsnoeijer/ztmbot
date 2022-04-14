@@ -47,7 +47,7 @@ async def on_message(message):
         return
 
     if message.content.startswith(prefix):
-        args = message.content.slice(len(prefix)).trim().split(' ')
+        args = message.content[10:].strip().split(' ')
 
         if len(args) > 0:
             for _ in range(0, int(args[0])):
