@@ -80,11 +80,18 @@ async def on_message(message):
                 update_score(user, points)
                 head, sep, tail = str(message.author).partition('#')
 
-                embed = discord.Embed(
-                    title=f"Correct, {head}!",
-                    description=f"The answer was {answer[0]}. You answered in {total_time} seconds and earned {points} point. Next question in 15 seconds.")
-                await message.channel.send(embed=embed)
-                sleep(15)
+                if i == num_questions - 1:
+                    embed = discord.Embed(
+                        title=f"Correct, {head}!",
+                        description=f"The answer was {answer[0]}. You answered in {total_time} seconds and earned {points} point.\nRound has finished!")
+                    await message.channel.send(embed=embed)
+
+                else:
+                    embed = discord.Embed(
+                        title=f"Correct, {head}!",
+                        description=f"The answer was {answer[0]}. You answered in {total_time} seconds and earned {points} point.\n Next question in 15 seconds.")
+                    await message.channel.send(embed=embed)
+                    sleep(15)
 
             i += 1
 
