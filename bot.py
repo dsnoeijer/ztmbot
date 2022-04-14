@@ -3,7 +3,7 @@ import json
 import asyncio
 import requests
 import discord
-
+import time
 
 client = discord.Client()
 token = os.environ.get('BOT_TOKEN')
@@ -76,5 +76,10 @@ async def on_message(message):
                 head, sep, tail = str(message.author).partition('#')
                 await message.channel.send(str(head) + " has answered correctly: " + "\"" + answer[0] +
                                            "\"and earned " + str(points) + " points!")
+                time.sleep(1)
+                await message.channel.send(str("Next question in 15 seconds."))
+                time.sleep(15)
+
+            i += 1
 
 client.run(token)
