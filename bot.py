@@ -3,7 +3,7 @@ import json
 import asyncio
 import requests
 import discord
-import time
+from time import time
 
 client = discord.Client()
 token = os.environ.get('BOT_TOKEN')
@@ -59,6 +59,7 @@ async def on_message(message):
             question, cat, answer, points = get_question()
 
             # Add colors
+            start_time = time()
             embed = discord.Embed(title=cat, description=question, color=0xff0000)
             await message.channel.send(embed=embed)
 
@@ -71,13 +72,18 @@ async def on_message(message):
                 return await message.channel.send("Sorry, time's up!")
 
             if guess.content in answer:
+                end_time = time()
+                total_time = end_time - start_time
                 user = guess.author
                 update_score(user, points)
                 head, sep, tail = str(message.author).partition('#')
-                await message.channel.send(str(head) + " has answered correctly: " + "\"" + answer[0] +
-                                           "\"and earned " + str(points) + " points!")
-                time.sleep(1)
-                await message.channel.send(str("Next question in 15 seconds."))
+
+                embed = discord.Embed(
+                    title=f"Correct, {head}!",
+                    description=f"The answer was {answer[0]}. You answered in {total_time} seconds and earned {points} point. Next question in 15 seconds.")
+                await message.channel.send(embed=embed)
+                # await message.channel.send(str(head) + " has answered correctly: " + "\"" + answer[0] +
+                #                            "\"and earned " + str(points) + " points!")
                 time.sleep(15)
 
             i += 1
