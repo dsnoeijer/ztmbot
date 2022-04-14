@@ -49,14 +49,13 @@ async def on_message(message):
     if message.content.startswith(prefix):
         args = message.content[10:].strip().split(' ')
 
-        question, cat, answer, points = get_question()
-
         if len(message) > 9:
             num_questions = int(args[0])
         else:
             num_questions = 1
 
         for _ in range(0, num_questions):
+            question, cat, answer, points = get_question()
             embed = discord.Embed(title=cat, description=question, color=0xff0000)
             await message.channel.send(embed=embed)
 
