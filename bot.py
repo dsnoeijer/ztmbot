@@ -8,6 +8,15 @@ import discord
 client = discord.Client()
 
 
+def update_score():
+
+    url = "https://lit-ocean-06406.herokuapp.com/api/score/update/"
+    new_score = {'name': 'dan', 'points': 10}
+    x = requests.post(url, data=new_score)
+
+    return
+
+
 def get_question():
 
     qs = ''
@@ -45,6 +54,7 @@ async def on_message(message):
             return await message.channel.send("Sorry, time's up!")
 
         if guess.content in answer:
+            update_score()
             head, sep, tail = str(message.author).partition('#')
             await message.channel.send(str(head) +
                                        " has answered correctly: " + "\"" + answer[0] + "\"")
