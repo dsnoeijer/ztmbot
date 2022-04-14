@@ -49,28 +49,30 @@ async def on_message(message):
     if message.content.startswith(prefix):
         args = message.content[10:].strip().split(' ')
 
-        if len(args) > 0:
-            for _ in range(0, int(args[0])):
-                question, cat, answer, points = get_question()
+        question, cat, answer, points = get_question()
+
+        if len(message) > 9:
+            num_questions = int(args[0])
         else:
-            question, cat, answer, points = get_question()
+            num_questions = 1
 
-        embed = discord.Embed(title=cat, description=question, color=0xff0000)
-        await message.channel.send(embed=embed)
+        for _ in range(0, num_questions):
+            embed = discord.Embed(title=cat, description=question, color=0xff0000)
+            await message.channel.send(embed=embed)
 
-        def check(m):
-            return m.author == message.author
+            def check(m):
+                return m.author == message.author
 
-        try:
-            guess = await client.wait_for('message', check=check, timeout=5.0)
-        except asyncio.TimeoutError:
-            return await message.channel.send("Sorry, time's up!")
+            try:
+                guess = await client.wait_for('message', check=check, timeout=5.0)
+            except asyncio.TimeoutError:
+                return await message.channel.send("Sorry, time's up!")
 
-        if guess.content in answer:
-            user = guess.author
-            update_score(user, points)
-            head, sep, tail = str(message.author).partition('#')
-            await message.channel.send(str(head) + " has answered correctly: " + "\"" + answer[0] +
-                                       "\"and earned " + str(points) + " points!")
+            if guess.content in answer:
+                user = guess.author
+                update_score(user, points)
+                head, sep, tail = str(message.author).partition('#')
+                await message.channel.send(str(head) + " has answered correctly: " + "\"" + answer[0] +
+                                           "\"and earned " + str(points) + " points!")
 
 client.run(token)
