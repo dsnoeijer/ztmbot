@@ -57,6 +57,8 @@ async def on_message(message):
         i = 0
         while i < num_questions:
             question, cat, answer, points = get_question()
+
+            # Add colors
             embed = discord.Embed(title=cat, description=question, color=0xff0000)
             await message.channel.send(embed=embed)
 
