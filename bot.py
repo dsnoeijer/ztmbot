@@ -49,7 +49,7 @@ async def on_message(message):
     if message.content.startswith(prefix):
         args = message.content[10:].strip().split(' ')
 
-        if len(message) > 9:
+        if len(message.content) > 9:
             num_questions = int(args[0])
         else:
             num_questions = 1
