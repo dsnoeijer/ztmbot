@@ -1,5 +1,6 @@
 import os
-from time import time
+from time import time, sleep
+from decimal import Decimal
 import json
 import asyncio
 import requests
@@ -74,7 +75,7 @@ async def on_message(message):
 
             if guess.content in answer:
                 end_time = time()
-                total_time = end_time - start_time
+                total_time = round(Decimal(end_time - start_time), 2)
                 user = guess.author
                 update_score(user, points)
                 head, sep, tail = str(message.author).partition('#')
@@ -83,7 +84,7 @@ async def on_message(message):
                     title=f"Correct, {head}!",
                     description=f"The answer was {answer[0]}. You answered in {total_time} seconds and earned {points} point. Next question in 15 seconds.")
                 await message.channel.send(embed=embed)
-                time.sleep(15)
+                sleep(15)
 
             i += 1
 
