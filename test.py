@@ -1,4 +1,4 @@
-message = "/question"
+message = "/question 12"
+args = message[10:].strip().split(' ')
 print(len(message))
-message = message[10:].strip().split(' ')
-print(message[0])
+print(args[0])

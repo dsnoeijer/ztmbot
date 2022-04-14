@@ -54,7 +54,8 @@ async def on_message(message):
         else:
             num_questions = 1
 
-        for _ in range(num_questions):
+        i = 0
+        while i < num_questions:
             question, cat, answer, points = get_question()
             embed = discord.Embed(title=cat, description=question, color=0xff0000)
             await message.channel.send(embed=embed)
