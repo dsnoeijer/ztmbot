@@ -9,6 +9,7 @@ client = discord.Client()
 token = os.environ.get('BOT_TOKEN')
 question_token = os.environ.get('BOT_QUESTIONS')
 score_update = os.environ.get('BOT_SCORE_UPDATE')
+prefix = "/question"
 
 
 def update_score(user, points):
@@ -20,7 +21,7 @@ def update_score(user, points):
     return
 
 
-def get_question():
+def get_question(*args):
 
     qs = ''
     answer = []
@@ -45,8 +46,14 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('/question'):
-        question, cat, answer, points = get_question()
+    if message.content.startswith(prefix):
+        args = message.content.slice(len(prefix)).trim().split(' ')
+
+        if len(args) > 0:
+            for _ in range(0, int(args[0])):
+                question, cat, answer, points = get_question()
+        else:
+            question, cat, answer, points = get_question()
 
         embed = discord.Embed(title=cat, description=question, color=0xff0000)
         await message.channel.send(embed=embed)
