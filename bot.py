@@ -21,6 +21,8 @@ def get_question():
 
     qs = ''
     answer = []
+    points = 0
+
     response = requests.get("https://lit-ocean-06406.herokuapp.com/api/random/")
     json_data = json.loads(response.text)
     cat = json_data[0]['cat'] + "\n"
@@ -29,6 +31,8 @@ def get_question():
 
     for item in json_data[0]['answer']:
         answer.append(item['answer'])
+
+    points = json_data[0]['points']
 
     return(qs, cat, answer)
 
@@ -40,7 +44,7 @@ async def on_message(message):
         return
 
     if message.content.startswith('/question'):
-        question, cat, answer = get_question()
+        question, cat, answer, points = get_question()
 
         embed = discord.Embed(title=cat, description=question, color=0xff0000)
         await message.channel.send(embed=embed)
@@ -54,10 +58,11 @@ async def on_message(message):
             return await message.channel.send("Sorry, time's up!")
 
         if guess.content in answer:
+            user = guess.author
             update_score()
             head, sep, tail = str(message.author).partition('#')
-            await message.channel.send(str(head) +
-                                       " has answered correctly: " + "\"" + answer[0] + "\"")
+            await message.channel.send(str(head) + " has answered correctly: " + "\"" + answer[0] +
+                                       "\"and earned " + str(points) + " points!")
 
 token = os.environ.get('BOT_TOKEN')
 client.run(token)
