@@ -6,11 +6,14 @@ import discord
 
 
 client = discord.Client()
+token = os.environ.get('BOT_TOKEN')
+question_token = os.environ.get('BOT_QUESTIONS')
+score_update = os.environ.get('BOT_SCORE_UPDATE')
 
 
 def update_score(user, points):
 
-    url = "https://lit-ocean-06406.herokuapp.com/api/score/update/"
+    url = score_update
     new_score = {'name': user, 'points': points}
     x = requests.post(url, data=new_score)
 
@@ -22,7 +25,7 @@ def get_question():
     qs = ''
     answer = []
 
-    response = requests.get("https://lit-ocean-06406.herokuapp.com/api/random/")
+    response = requests.get(question_token)
     json_data = json.loads(response.text)
     cat = json_data[0]['cat'] + "\n"
     qs += "Question: \n"
@@ -63,5 +66,4 @@ async def on_message(message):
             await message.channel.send(str(head) + " has answered correctly: " + "\"" + answer[0] +
                                        "\"and earned " + str(points) + " points!")
 
-token = os.environ.get('BOT_TOKEN')
 client.run(token)
