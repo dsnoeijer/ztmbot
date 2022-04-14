@@ -21,7 +21,6 @@ def get_question():
 
     qs = ''
     answer = []
-    points = 0
 
     response = requests.get("https://lit-ocean-06406.herokuapp.com/api/random/")
     json_data = json.loads(response.text)
@@ -34,7 +33,7 @@ def get_question():
 
     points = json_data[0]['points']
 
-    return(qs, cat, answer)
+    return(qs, cat, answer, points)
 
 
 @client.event
