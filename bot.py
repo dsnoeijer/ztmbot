@@ -32,15 +32,12 @@ def get_question(num):
     response = requests.get(question_token)
     json_data = json.loads(response.text)
     cat = json_data[0]['cat'] + "\n"
-    qs += f"Question: \n"
     qs += json_data[0]['title'] + "\n"
 
     for item in json_data[0]['answer']:
         answer.append(item['answer'])
 
-    points = json_data[0]['points']
-
-    return(qs, cat, answer, points)
+    return(qs, cat, answer)
 
 
 @client.event
@@ -59,7 +56,7 @@ async def on_message(message):
 
         i = 0
         while i < num_questions:
-            question, cat, answer, points = get_question(i)
+            question, cat, answer = get_question(i)
 
             # Add colors
             start_time = time()
@@ -73,6 +70,14 @@ async def on_message(message):
             def check(m):
                 return m.author == message.author
 
+            if time() - start_time == 40:
+                embed = discord.Embed(
+                    description="20 seconds remaining...")
+                await message.channel.send(embed=embed)
+            elif time() - start_time == 20:
+                embed = discord.Embed(description="40 seconds remaining...")
+                await message.channel.send(embed=embed)
+
             try:
                 guess = await client.wait_for('message', check=check, timeout=5.0)
             except asyncio.TimeoutError:
@@ -81,6 +86,14 @@ async def on_message(message):
             if guess.content in answer:
                 end_time = time()
                 total_time = round(Decimal(end_time - start_time), 2)
+
+                if total_time <= 20:
+                    points = 4
+                elif total_time > 20 and total_time <= 40:
+                    points = 2
+                else:
+                    points = 1
+
                 user = guess.author
                 update_score(user, points)
                 head, sep, tail = str(message.author).partition('#')
@@ -88,13 +101,13 @@ async def on_message(message):
                 if i == num_questions - 1:
                     embed = discord.Embed(
                         title=f"Correct, {head}!",
-                        description=f"The answer was {answer[0]}. You answered in {total_time} seconds and earned {points} point.\nRound has finished!")
+                        description=f"The answer was **{answer[0]}**. You answered in {total_time} seconds and earned {points} point.\nRound has finished!")
                     await message.channel.send(embed=embed)
 
                 else:
                     embed = discord.Embed(
                         title=f"Correct, {head}!",
-                        description=f"The answer was {answer[0]}. You answered in {total_time} seconds and earned {points} point.\n Next question in 15 seconds.")
+                        description=f"The answer was **{answer[0]}**. You answered in {total_time} seconds and earned {points} point.\n Next question in 15 seconds.")
                     await message.channel.send(embed=embed)
                     sleep(15)
 
