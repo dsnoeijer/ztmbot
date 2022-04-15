@@ -75,7 +75,7 @@ async def on_message(message):
             embed.set_footer(text="ZTM Bot - work in progress")
             embed.timestamp = datetime.datetime.now()
             await message.channel.send(embed=embed)
-            sendmessage()
+            await sendmessage()
 
             def check(m):
                 return m.author == message.author
