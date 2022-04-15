@@ -43,9 +43,9 @@ def get_question(num):
 
 async def sendmessage():
     channel = discord.utils.get(client.get_all_channels(), name="testing-bot")
-    sleep(20)
+    await sleep(20)
     await channel.send("40 seconds remaining...")
-    sleep(20)
+    await sleep(20)
     await channel.send("20 seconds remaining...")
 
 
