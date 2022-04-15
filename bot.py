@@ -6,6 +6,7 @@ import json
 import asyncio
 import requests
 import discord
+from discord.ext import tasks
 
 
 client = discord.Client()
@@ -40,6 +41,14 @@ def get_question(num):
     return(qs, cat, answer)
 
 
+async def sendmessage():
+    channel = client.get_channel('channel id')
+    sleep(20)
+    await channel.send("40 seconds remaining...")
+    sleep(20)
+    await channel.send("20 seconds remaining...")
+
+
 @client.event
 async def on_message(message):
 
@@ -60,23 +69,16 @@ async def on_message(message):
 
             # Add colors
             start_time = time()
-            embed = discord.Embed(title=f"Question {i + i} of {num_questions}", color=0xff0000)
+            embed = discord.Embed(title=f"Question {i + 1} of {num_questions}", color=0xff0000)
             embed.add_field(name="Category", value=cat, inline=False)
             embed.add_field(name="Question", value=question, inline=False)
             embed.set_footer(text="ZTM Bot - work in progress")
             embed.timestamp = datetime.datetime.now()
             await message.channel.send(embed=embed)
+            sendmessage()
 
             def check(m):
                 return m.author == message.author
-
-            if time() - start_time == 40:
-                embed = discord.Embed(
-                    description="20 seconds remaining...")
-                await message.channel.send(embed=embed)
-            elif time() - start_time == 20:
-                embed = discord.Embed(description="40 seconds remaining...")
-                await message.channel.send(embed=embed)
 
             try:
                 guess = await client.wait_for('message', check=check, timeout=60.0)
