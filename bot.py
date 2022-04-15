@@ -79,7 +79,7 @@ async def on_message(message):
                 await message.channel.send(embed=embed)
 
             try:
-                guess = await client.wait_for('message', check=check, timeout=5.0)
+                guess = await client.wait_for('message', check=check, timeout=60.0)
             except asyncio.TimeoutError:
                 return await message.channel.send("Sorry, time's up!")
 
