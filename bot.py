@@ -1,6 +1,7 @@
 import os
 from time import time, sleep
 from decimal import Decimal
+import datetime
 import json
 import asyncio
 import requests
@@ -23,7 +24,7 @@ def update_score(user, points):
     return
 
 
-def get_question(*args):
+def get_question(num):
 
     qs = ''
     answer = []
@@ -31,7 +32,7 @@ def get_question(*args):
     response = requests.get(question_token)
     json_data = json.loads(response.text)
     cat = json_data[0]['cat'] + "\n"
-    qs += "Question: \n"
+    qs += f"Question: \n"
     qs += json_data[0]['title'] + "\n"
 
     for item in json_data[0]['answer']:
@@ -58,11 +59,15 @@ async def on_message(message):
 
         i = 0
         while i < num_questions:
-            question, cat, answer, points = get_question()
+            question, cat, answer, points = get_question(i)
 
             # Add colors
             start_time = time()
-            embed = discord.Embed(title=cat, description=question, color=0xff0000)
+            embed = discord.Embed(title=f"Question {i + i} of {num_questions}", color=0xff0000)
+            embed.add_field(name="Category", value=cat, inline=False)
+            embed.add_field(name="Question", value=question, inline=False)
+            embed.set_footer(text="ZTM Bot - work in progress")
+            embed.timestamp = datetime.datetime.now()
             await message.channel.send(embed=embed)
 
             def check(m):
