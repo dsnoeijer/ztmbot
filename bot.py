@@ -41,14 +41,6 @@ def get_question(num):
     return(qs, cat, answer)
 
 
-async def sendmessage():
-    channel = discord.utils.get(client.get_all_channels(), name="testing-bot")
-    await asyncio.sleep(20)
-    await channel.send("40 seconds remaining...")
-    await asyncio.sleep(20)
-    await channel.send("20 seconds remaining...")
-
-
 @client.event
 async def on_message(message):
 
@@ -75,7 +67,6 @@ async def on_message(message):
             embed.set_footer(text="ZTM Bot - work in progress")
             embed.timestamp = datetime.datetime.now()
             await message.channel.send(embed=embed)
-            await sendmessage()
 
             def check(m):
                 return m.author == message.author
