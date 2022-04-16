@@ -17,6 +17,9 @@ prefix = "/question"
 
 
 def update_score(user, points):
+    print("update_score")
+    print(type(user))
+    print(type(points))
 
     url = score_update
     new_score = {'name': user, 'points': points}
@@ -43,7 +46,6 @@ def get_question():
 
 @client.event
 async def on_message(message: Type[discord.message.Message]) -> None:
-    print(type(message))
 
     if message.author == client.user:
         return
@@ -59,6 +61,9 @@ async def on_message(message: Type[discord.message.Message]) -> None:
         i = 0
         while i < num_questions:
             question, cat, answer = get_question()
+            print(type(question))
+            print(type(cat))
+            print(type(answer))
 
             # Add colors
             start_time = time()
@@ -70,6 +75,7 @@ async def on_message(message: Type[discord.message.Message]) -> None:
             await message.channel.send(embed=embed)
 
             def check(m):
+                print(type(m))
                 return m.author == message.author
 
             try:
