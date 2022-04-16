@@ -6,7 +6,6 @@ import json
 import asyncio
 import requests
 import discord
-from discord.ext import tasks
 
 
 client = discord.Client()
