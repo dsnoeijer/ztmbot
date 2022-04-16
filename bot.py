@@ -1,6 +1,6 @@
 import os
 from time import time, sleep
-from typing import Type
+from typing import Type, Tuple
 from decimal import Decimal
 import datetime
 import json
@@ -9,31 +9,27 @@ import requests
 import discord
 
 
-client = discord.Client()
-token = os.environ.get('BOT_TOKEN')
-question_token = os.environ.get('BOT_QUESTIONS')
-score_update = os.environ.get('BOT_SCORE_UPDATE')
-prefix = "/question"
+CLIENT = discord.Client()
+TOKEN = os.environ.get('BOT_TOKEN')
+QUESTION_TOKEN = os.environ.get('BOT_QUESTIONS')
+SCORE_UPDATE = os.environ.get('BOT_SCORE_UPDATE')
+PREFIX = "/question"
 
 
-def update_score(user, points):
-    print("update_score")
-    print(type(user))
-    print(type(points))
-
-    url = score_update
+def update_score(user: Type[discord.member.Member], points: int) -> None:
+    url = SCORE_UPDATE
     new_score = {'name': user, 'points': points}
     x = requests.post(url, data=new_score)
 
     return
 
 
-def get_question():
+def get_question() -> Tuple[str, str, list]:
 
     qs = ''
     answer = []
 
-    response = requests.get(question_token)
+    response = requests.get(QUESTION_TOKEN)
     json_data = json.loads(response.text)
     cat = json_data[0]['cat'] + "\n"
     qs += json_data[0]['title'] + "\n"
@@ -44,13 +40,13 @@ def get_question():
     return(qs, cat, answer)
 
 
-@client.event
+@CLIENT.event
 async def on_message(message: Type[discord.message.Message]) -> None:
 
-    if message.author == client.user:
+    if message.author == CLIENT.user:
         return
 
-    if message.content.startswith(prefix):
+    if message.content.startswith(PREFIX):
         args = message.content[10:].strip().split(' ')
 
         if len(message.content) > 9:
@@ -61,9 +57,6 @@ async def on_message(message: Type[discord.message.Message]) -> None:
         i = 0
         while i < num_questions:
             question, cat, answer = get_question()
-            print(type(question))
-            print(type(cat))
-            print(type(answer))
 
             # Add colors
             start_time = time()
@@ -79,7 +72,7 @@ async def on_message(message: Type[discord.message.Message]) -> None:
                 return m.author == message.author
 
             try:
-                guess = await client.wait_for('message', check=check, timeout=60.0)
+                guess = await CLIENT.wait_for('message', check=check, timeout=60.0)
             except asyncio.TimeoutError:
                 return await message.channel.send("Sorry, time's up!")
 
@@ -113,4 +106,4 @@ async def on_message(message: Type[discord.message.Message]) -> None:
 
             i += 1
 
-client.run(token)
+CLIENT.run(TOKEN)
