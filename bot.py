@@ -16,32 +16,32 @@ SCORE_UPDATE = os.environ.get('BOT_SCORE_UPDATE')
 PREFIX = "/question"
 
 
-def update_score(user: Type[discord.member.Member], points: int) -> None:
+def update_score(user, points):
     url = SCORE_UPDATE
     new_score = {'name': user, 'points': points}
-    x = requests.post(url, data=new_score)
+    requests.post(url, data=new_score)
 
     return
 
 
-def get_question() -> Tuple[str, str, list]:
+def get_question():
 
-    qs = ''
+    question = ''
     answer = []
 
     response = requests.get(QUESTION_TOKEN)
     json_data = json.loads(response.text)
     cat = json_data[0]['cat'] + "\n"
-    qs += json_data[0]['title'] + "\n"
+    question += json_data[0]['title'] + "\n"
 
     for item in json_data[0]['answer']:
         answer.append(item['answer'])
 
-    return(qs, cat, answer)
+    return(question, cat, answer)
 
 
 @CLIENT.event
-async def on_message(message: Type[discord.message.Message]) -> None:
+async def on_message(message):
 
     if message.author == CLIENT.user:
         return
@@ -67,9 +67,8 @@ async def on_message(message: Type[discord.message.Message]) -> None:
             embed.timestamp = datetime.datetime.now()
             await message.channel.send(embed=embed)
 
-            def check(m):
-                print(type(m))
-                return m.author == message.author
+            def check(message):
+                return message.author
 
             try:
                 guess = await CLIENT.wait_for('message', check=check, timeout=60.0)
@@ -82,7 +81,7 @@ async def on_message(message: Type[discord.message.Message]) -> None:
 
                 if total_time <= 20:
                     points = 4
-                elif total_time > 20 and total_time <= 40:
+                elif total_time <= 40:
                     points = 2
                 else:
                     points = 1
