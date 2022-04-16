@@ -1,5 +1,6 @@
 import os
 from time import time, sleep
+from typing import Type
 from decimal import Decimal
 import datetime
 import json
@@ -41,7 +42,7 @@ def get_question():
 
 
 @client.event
-async def on_message(message):
+async def on_message(message: Type[discord.message.Message]) -> None:
     print(type(message))
 
     if message.author == client.user:
