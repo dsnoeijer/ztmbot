@@ -24,7 +24,7 @@ def update_score(user, points):
     return
 
 
-def get_question(num):
+def get_question():
 
     qs = ''
     answer = []
@@ -56,7 +56,7 @@ async def on_message(message):
 
         i = 0
         while i < num_questions:
-            question, cat, answer = get_question(i)
+            question, cat, answer = get_question()
 
             # Add colors
             start_time = time()
