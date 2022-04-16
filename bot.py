@@ -42,6 +42,7 @@ def get_question():
 
 @client.event
 async def on_message(message):
+    print(type(message))
 
     if message.author == client.user:
         return
