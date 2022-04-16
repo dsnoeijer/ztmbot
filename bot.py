@@ -1,6 +1,5 @@
 import os
 from time import time, sleep
-from typing import Type, Tuple
 from decimal import Decimal
 import datetime
 import json
@@ -60,7 +59,8 @@ async def on_message(message):
 
             # Add colors
             start_time = time()
-            embed = discord.Embed(title=f"Question {i + 1} of {num_questions}", color=0xff0000)
+            embed = discord.Embed(
+                title=f"Question {i + 1} of {num_questions}", color=0xff0000)
             embed.add_field(name="Category", value=cat, inline=False)
             embed.add_field(name="Question", value=question, inline=False)
             embed.set_footer(text="ZTM Bot - work in progress")

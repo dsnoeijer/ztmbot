@@ -1,5 +1,3 @@
-import imp
-from pickletools import read_long1
 from rest_framework import serializers
 from .models import Question, Answer
 
