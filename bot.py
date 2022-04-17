@@ -1,5 +1,4 @@
 import os
-from pydoc import describe
 from time import time, sleep
 from decimal import Decimal
 import datetime
