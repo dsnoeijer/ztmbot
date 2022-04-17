@@ -1,4 +1,5 @@
 import os
+from pydoc import describe
 from time import time, sleep
 from decimal import Decimal
 import datetime
@@ -6,6 +7,8 @@ import json
 import asyncio
 import requests
 import discord
+from discord_slash import SlashCommand, SlashContext
+from discord.ext import commands
 
 
 CLIENT = discord.Client()
@@ -13,6 +16,17 @@ TOKEN = os.environ.get('BOT_TOKEN')
 QUESTION_TOKEN = os.environ.get('BOT_QUESTIONS')
 SCORE_UPDATE = os.environ.get('BOT_SCORE_UPDATE')
 PREFIX = "/question"
+SLASH = SlashCommand(CLIENT, sync_commands=True)
+
+
+bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
+slash = SlashCommand(bot)
+
+
+@slash.slash(name="test")
+async def _test(ctx: SlashContext):
+    embed = discord.Embed(title="embed test")
+    await ctx.send(content="test", embeds=[embed])
 
 
 def update_score(user, points):
